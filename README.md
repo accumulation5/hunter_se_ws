@@ -12,7 +12,7 @@
 ```
 ├── drivers：真实场景下，物理硬件的驱动文件
 │   ├── GNSS-RTK：G70模块
-│   ├── hunter_ros：hunter_de底盘控制
+│   ├── hunter_ros：hunter_se底盘控制
 │   ├── lidar-N10P：N10P单线雷达
 │   └── robot_localization：多源融合定位功能包
 ├── hunter_se_simulation：仿真相关文件夹
