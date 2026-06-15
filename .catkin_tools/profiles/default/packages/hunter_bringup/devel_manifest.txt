@@ -1,0 +1,4 @@
+drivers/hunter_ros/hunter_bringup
+/home/amass/hunter_ws/devel/.private/hunter_bringup/lib/pkgconfig/hunter_bringup.pc /home/amass/hunter_ws/devel/lib/pkgconfig/hunter_bringup.pc
+/home/amass/hunter_ws/devel/.private/hunter_bringup/share/hunter_bringup/cmake/hunter_bringupConfig.cmake /home/amass/hunter_ws/devel/share/hunter_bringup/cmake/hunter_bringupConfig.cmake
+/home/amass/hunter_ws/devel/.private/hunter_bringup/share/hunter_bringup/cmake/hunter_bringupConfig-version.cmake /home/amass/hunter_ws/devel/share/hunter_bringup/cmake/hunter_bringupConfig-version.cmake

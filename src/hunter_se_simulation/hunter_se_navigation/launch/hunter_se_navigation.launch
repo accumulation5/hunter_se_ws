@@ -1,0 +1,26 @@
+<!--
+     导航实现launch文件   
+-->
+
+<launch>
+    
+    <include file="$(find hunter_se_gazebo)/launch/gazebo.launch">
+        <arg name="run_rviz" value="false"/>
+    </include>
+
+    <!-- 加载地图服务 -->
+    <include file="$(find hunter_se_navigation)/launch/map_server.launch" >
+        <arg name="map" value="map.yaml"/>
+    </include>
+    
+    <!-- 加载amcl定位节点 驱动文件 -->
+    <include file="$(find hunter_se_navigation)/launch/amcl_diff.launch" />
+
+    <!-- 加载move_base功能包 启动文件 -->
+    <include file="$(find hunter_se_navigation)/launch/move_base.launch" />
+
+    <!-- 启动rviz -->
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find hunter_se_navigation)/config/rviz.rviz"/>
+
+
+</launch>

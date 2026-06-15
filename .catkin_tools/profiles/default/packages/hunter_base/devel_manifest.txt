@@ -1,0 +1,6 @@
+drivers/hunter_ros/hunter_base
+/home/amass/hunter_ws/devel/.private/hunter_base/lib/libhunter_messenger.a /home/amass/hunter_ws/devel/lib/libhunter_messenger.a
+/home/amass/hunter_ws/devel/.private/hunter_base/lib/hunter_base/hunter_base_node /home/amass/hunter_ws/devel/lib/hunter_base/hunter_base_node
+/home/amass/hunter_ws/devel/.private/hunter_base/lib/pkgconfig/hunter_base.pc /home/amass/hunter_ws/devel/lib/pkgconfig/hunter_base.pc
+/home/amass/hunter_ws/devel/.private/hunter_base/share/hunter_base/cmake/hunter_baseConfig.cmake /home/amass/hunter_ws/devel/share/hunter_base/cmake/hunter_baseConfig.cmake
+/home/amass/hunter_ws/devel/.private/hunter_base/share/hunter_base/cmake/hunter_baseConfig-version.cmake /home/amass/hunter_ws/devel/share/hunter_base/cmake/hunter_baseConfig-version.cmake

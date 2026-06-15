@@ -1,0 +1,36 @@
+<!-- move_base 导航功能包 启动文件 -->
+<launch>
+
+
+    <!-- 雷达3D点云数据转2D激光数据 -->
+    <!-- <include file="$(find hunter_se_navigation)/launch/pointcloud_to_laserscan.launch" /> -->
+
+    <!-- 加载move_base导航功能包，并加载相关参数 -->
+    <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen" clear_params="true">
+        
+        <!-- 参数重映射 -->
+        <remap from="cmd_vel" to="ackermann_steering_controller/cmd_vel" />
+        <!-- <remap from="odom" to="ackermann_steering_controller/odom" /> -->
+
+        <!-- move_base全局参数设置 -->
+        <rosparam file="$(find hunter_se_navigation)/param/move_base_params.yaml" command="load" />
+
+        <!-- 代价地图通用参数 -->
+        <rosparam file="$(find hunter_se_navigation)/param/costmap_common_params.yaml" command="load" ns="global_costmap" />
+        <rosparam file="$(find hunter_se_navigation)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />
+        <!-- 本地/全局代价地图参数 -->
+        <rosparam file="$(find hunter_se_navigation)/param/local_costmap_params.yaml" command="load" />
+        <rosparam file="$(find hunter_se_navigation)/param/global_costmap_params.yaml" command="load" />
+        
+        <!-- 局部路径规划器参数加载 -->
+        <!-- <rosparam file="$(find hunter_se_navigation)/param/dwa_local_planner_params.yaml" command="load" /> -->
+        <!-- <rosparam file="$(find hunter_se_navigation)/param/base_local_planner_params.yaml" command="load" /> -->
+        <rosparam file="$(find hunter_se_navigation)/param/teb_local_planner_diff.yaml" command="load" />
+    
+        <!-- 全局路径规划器参数加载 -->
+        <rosparam file="$(find hunter_se_navigation)/param/navfn_global_planner_params.yaml" command="load" />
+        <!-- <rosparam file="$(find hunter_se_navigation)/param/global_planner_params.yaml" command="load" /> -->
+
+    </node>
+
+</launch>

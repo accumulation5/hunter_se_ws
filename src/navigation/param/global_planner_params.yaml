@@ -1,0 +1,7 @@
+GlobalPlanner:
+  use_dijkstra: false        # 是否使用 A* 算法，速度更快
+  use_grid_path: false       # 生成平滑路径，非栅格边界
+  allow_unknown: true        # 允许穿越未知区域（需代价地图同步设置）
+  default_tolerance: 0.2     # 目标配准容差 0.2 米
+  old_navfn_behavior: false  # 使用 modern global_planner 行为
+  visualize_potential: true  # 调试时启用

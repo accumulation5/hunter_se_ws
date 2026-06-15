@@ -1,0 +1,52 @@
+<!-- 
+      slam算法：gmapping 节点相关launch驱动文件 
+      具体参数设置可以参考gmapping官方wiki：https://wiki.ros.org/gmapping
+-->
+<launch>
+
+  <param name="use_sim_time" value="true"/>
+  <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
+    <!-- 雷达话题设置 -->
+    <remap from="scan" to="scan"/>                      <!-- 雷达话题名称 -->
+
+    <param name="base_frame" value="base_footprint"/>   <!-- 机器人基坐标系 -->
+    <param name="odom_frame" value="odom"/>             <!-- 里程计坐标系 -->
+    <param name="map_frame" value="map"/>               <!-- 地图坐标系 -->
+
+    <param name="map_update_interval" value="1.0"/>     <!-- 地图更新频率 1秒/次-->
+    <param name="delta" value="0.05"/>
+    
+    <param name="maxUrange" value="5.0"/>               <!-- 雷达最大测距范围 米 -->
+    <param name="sigma" value="0.03"/>
+    <param name="kernelSize" value="1"/>
+    <param name="lstep" value="0.03"/>
+    <param name="astep" value="0.03"/>
+    <param name="iterations" value="5"/>
+    <param name="lsigma" value="0.03"/>
+    <param name="ogain" value="3.0"/>
+    <param name="lskip" value="4"/>
+    <param name="minimumScore" value="60"/>
+    <param name="srr" value="0.03"/>
+    <param name="srt" value="0.05"/>
+    <param name="str" value="0.03"/>
+    <param name="stt" value="0.05"/>
+    <param name="linearUpdate" value="0.3"/>
+    <param name="angularUpdate" value="0.5"/>
+    <param name="temporalUpdate" value="0.5"/>
+    <param name="resampleThreshold" value="0.5"/>
+    <param name="particles" value="30"/>
+    
+    <param name="xmin" value="-50.0"/>                    <!-- 地图边界设置，单位为米 -->
+    <param name="ymin" value="-50.0"/>
+    <param name="xmax" value="50.0"/>
+    <param name="ymax" value="50.0"/>
+
+    <param name="llsamplerange" value="0.02"/>
+    <param name="llsamplestep" value="0.02"/>
+    <param name="lasamplerange" value="0.02"/>
+    <param name="lasamplestep" value="0.02"/>
+  </node>
+
+
+
+</launch>

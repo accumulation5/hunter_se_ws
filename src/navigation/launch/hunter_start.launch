@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+
+<!-- 
+    真实场景机器人启动文件，包含底盘控制器、激光雷达和rviz的启动
+ -->
+
+<launch>
+
+  <arg name="run_rviz" default="true"/>
+
+  <!-- 加载 无人车 描述文件 -->
+  <param name="robot_description" command="$(find xacro)/xacro $(find hunter_se_description)/urdf/hunter_se.urdf.xacro" />
+
+  <!-- 加载底盘控制器 -->
+  <include file="$(find hunter_base)/launch/hunter_base.launch">
+      <arg name="port_name" default="can0" />
+      <arg name="publish_tf" default="true" />
+  </include>
+
+  <!-- 加载激光雷达启动文件  -->
+  <include file="$(find lslidar_driver)/launch/lslidar_serial.launch" >
+    <arg name="lidar_name" value="N10_P"/>
+    <arg name="serial_port" value="/dev/ttyCH343USB0"/>
+    <arg name="frame_id" value="lidar"/>
+    <arg name="scan_topic" value="scan"/>
+  </include>
+
+  <!-- gnss-rtk节点 -->
+  <!-- <include file="$(find wheeltec_gps_driver)/launch/wheeltec_nmea_driver.launch" >
+    <arg name="port" value="/dev/ttyACM0" />
+    <arg name="baud" value="9600" />
+    <arg name="frame_id" value="gps_antenna" />
+  </include> -->
+
+  <!-- 加载robot_localizaition功能包，修正odom数据，发布odom->base_footprint TF -->
+  <!-- <include file="$(find navigation)/launch/robot_localizaition_ekf_odom.launch" /> -->
+  
+  <!-- 关节状态发布节点 -->
+  <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher" output="screen" />
+  <!-- 机器人状态发布节点 -->
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen" />
+
+  <!-- 启动rviz -->
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find navigation)/config/rviz.rviz" 
+    if="$(arg run_rviz)"/>
+
+</launch>
+
+
+

@@ -1,0 +1,16 @@
+<launch>
+
+  <arg name="run_rviz" default="true"/>
+
+  <!-- 加载 无人车 描述文件 -->
+  <param name="robot_description" command="$(find xacro)/xacro $(find hunter_se_description)/urdf/hunter_se.urdf.xacro" />
+
+  <!-- 关节状态发布节点 -->
+  <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher" output="screen" />
+  <!-- 机器人状态发布节点 -->
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen" />
+
+  <!-- 启动rviz -->
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find hunter_se_description)/config/rviz.rviz" if="$(arg run_rviz)"/>
+
+</launch>

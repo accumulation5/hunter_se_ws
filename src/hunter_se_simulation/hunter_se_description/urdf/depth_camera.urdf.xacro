@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 
+    深度相机 == realsense 描述文件
+        型号：D435i
+        参数： 
+            支架尺寸：长度-0.04m；直径-0.01
+            相机尺寸：长宽高：0.09，0.02505，0.025 m
+-->
+
+<robot name="depth_camera" xmlns:xacro="http://wiki.ros.org/xacro">
+    
+    <!-- 支架 参数变量定义 -->
+    <xacro:property name="support_depth_camera_length" value="0.04" />   <!-- 支架长度 -->
+    <xacro:property name="support_depth_camera_radius" value="0.01" />   <!-- 支架半径 -->
+    <xacro:property name="support_depth_camera_mass" value="0.02"/>       <!-- 支架质量 -->    
+    <xacro:property name="support_depth_camera_x" value="0.30" />        <!-- 支架安装的x坐标(以车体base_link为参考坐标系) -->
+    <xacro:property name="support_depth_camera_y" value="0.0" />         <!-- 支架安装的y坐标 -->
+    <xacro:property name="support_depth_camera_z" value="0.02" />        <!-- 支架安装的z坐标  -->
+    
+    <!-- 深度相机 变量定义 -->
+    <xacro:property name="depth_camera_length" value="0.09" />    <!-- 相机长度(x) -->
+    <xacro:property name="depth_camera_width" value="0.02505" />  <!-- 相机宽度(y) -->
+    <xacro:property name="depth_camera_height" value="0.025" />   <!-- 相机高度(z) -->
+    <xacro:property name="depth_camera_mass" value="1.0" />        <!-- 相机质量 -->
+    <xacro:property name="depth_camera_x" value="0.01" />          <!-- 相机安装的x坐标 （以支架中心为参考坐标系）-->
+    <xacro:property name="depth_camera_y" value="0.0" />          <!-- 相机安装的y坐标 -->
+    <xacro:property name="depth_camera_z" value="0.03125" />      <!-- 相机安装的z坐标 -->
+
+    <!-- 1. 相机支架 -->
+    <link name="support_depth_camera">
+        <visual>
+            <geometry>
+                <cylinder radius="${support_depth_camera_radius}" length="${support_depth_camera_length}" />
+            </geometry>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+            <material name="black">
+                <color rgba="0 0 0 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="${support_depth_camera_radius}" length="${support_depth_camera_length}" />
+            </geometry>
+        </collision>
+        <inertial>
+        <mass value="${support_depth_camera_mass}"/>
+        <origin xyz="0 0 0"/>
+        <inertia ixx="${(support_depth_camera_mass * (3.0*support_depth_camera_radius*support_depth_camera_radius + support_depth_camera_length*support_depth_camera_length)) / 12.0}" 
+                 iyy="${(support_depth_camera_mass * (3.0*support_depth_camera_radius*support_depth_camera_radius + support_depth_camera_length*support_depth_camera_length)) / 12.0}" 
+                 izz="${0.5 * support_depth_camera_mass * (support_depth_camera_radius*support_depth_camera_radius)}"
+                 ixy="0" ixz="0" iyz="0"/>
+        </inertial>
+    </link>
+
+    <joint name="support_depth_camera_to_base_link" type="fixed">
+        <parent link="base_link" />
+        <child link="support_depth_camera" />
+        <origin xyz="${support_depth_camera_x} ${support_depth_camera_y} ${support_depth_camera_z}" />
+    </joint>
+
+    <!-- 2. 相机 -->
+    <link name="depth_camera">
+        <visual>
+            <geometry>
+                <mesh filename="package://hunter_se_description/meshes/realsense/d435.stl" />
+            </geometry>
+            <origin xyz="0.0 0.0 0.0" rpy="0 0 -1.57" />
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://hunter_se_description/meshes/realsense/d435.stl" />
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.072" />
+            <origin xyz="0 0 0" />
+            <inertia ixx="0.003881243" ixy="0.0" ixz="0.0" iyy="0.000498940" iyz="0.0" izz="0.003879257" />
+        </inertial>
+    </link>
+
+    <joint name="depth_camera_to_support_depth_camera" type="fixed">
+        <parent link="support_depth_camera" />
+        <child link="depth_camera" />
+        <origin xyz="${depth_camera_x} ${depth_camera_y} ${depth_camera_z}" />
+    </joint>
+
+
+    <!-- gazebo 仿真参数与插件配置 -->
+    <gazebo reference="depth_camera">         <!-- 对应描述文件.urdf中的link名称 -->
+      <sensor type="depth" name="camera">
+        <always_on>true</always_on>
+        <update_rate>20.0</update_rate>       <!-- 更新频率 20次/s -->
+        <camera>
+          <horizontal_fov>${60.0*3.14/180.0}</horizontal_fov>
+          <image>
+            <format>R8G8B8</format>
+            <width>640</width>                <!-- 深度相机的分辨率，单位为像素 -->
+            <height>480</height>
+          </image>
+          <clip>
+            <near>0.05</near>                 <!-- 深度相机的测距范围，单位为米 -->
+            <far>8.0</far>
+          </clip>
+        </camera>
+
+        <!-- kinect插件 -->
+        <plugin name="kinect_camera_controller" filename="libgazebo_ros_openni_kinect.so">
+          <cameraName>camera</cameraName>
+          <alwaysOn>true</alwaysOn>
+          <updateRate>10</updateRate>
+          <imageTopicName>rgb/image_raw</imageTopicName>                <!-- RGB图像话题 -->
+          <depthImageTopicName>depth/image_raw</depthImageTopicName>    <!-- 深度图像话题 -->
+          <pointCloudTopicName>depth/points</pointCloudTopicName>       <!-- 点云话题 -->
+          <cameraInfoTopicName>rgb/camera_info</cameraInfoTopicName>
+          <depthImageCameraInfoTopicName>depth/camera_info</depthImageCameraInfoTopicName>
+          <frameName>depth_camera_kinect</frameName>
+          <baseline>0.1</baseline>
+          <distortion_k1>0.0</distortion_k1>
+          <distortion_k2>0.0</distortion_k2>
+          <distortion_k3>0.0</distortion_k3>
+          <distortion_t1>0.0</distortion_t1>
+          <distortion_t2>0.0</distortion_t2>
+          <pointCloudCutoff>0.4</pointCloudCutoff>
+        </plugin>
+
+      </sensor>
+    </gazebo>
+
+
+</robot>
+
+

@@ -1,0 +1,31 @@
+# 基于ROS的移动机器人局部路径规划参数配置文件
+
+TrajectoryPlannerROS:
+
+# Robot Configuration Parameters
+  max_vel_x: 0.8 # X 方向最大速度     default:0.5
+  min_vel_x: 0.0 # X 方向最小速度     default:0.1
+
+  max_vel_theta:  0.3   # 最大旋转速度(弧度/秒)   default:1.0
+  min_vel_theta: -0.3   # 最小旋转速度(弧度/秒)  default:-1.0
+  min_in_place_vel_theta: 1.0 # 最小原地旋转速度  default:1.0
+
+  acc_lim_x: 1.8 # X 加速限制       default:1.0
+  acc_lim_y: 0.75 # Y 加速限制      default:0.0
+  acc_lim_theta: 3 # 角速度加速限制   default:0.6
+
+# Goal Tolerance Parameters，目标公差
+  xy_goal_tolerance: 0.2
+  yaw_goal_tolerance: 0.05
+
+# Differential-drive robot configuration
+# 是否是全向移动机器人
+  holonomic_robot: false
+
+# Forward Simulation Parameters，前进模拟参数
+  sim_time: 3.0
+  vx_samples: 18
+  vtheta_samples: 20
+  sim_granularity: 0.05
+
+  meter_scoring: true

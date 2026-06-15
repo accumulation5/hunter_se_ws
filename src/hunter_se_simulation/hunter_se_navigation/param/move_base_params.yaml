@@ -1,0 +1,21 @@
+# 配置全局路径规划算法和局部路径规划算法参数
+
+shutdown_costmaps: false
+
+controller_frequency: 5.0   # 局部规划器调用频率
+controller_patience: 15.0    # 允许连续规划失败的最长时间
+
+planner_frequency: 1.0      # 全局规划器调用频率
+planner_patience: 5.0       # 允许连续规划失败的最长时间，即连续失败5秒就算失败，重新规划/清除障碍
+
+oscillation_timeout: 10.0
+oscillation_distance: 0.2
+
+recovery_behavior_enbaled: false 
+
+#alternatives: base_local_planner/TrajectoryPlannerROS, teb_local_planner/TebLocalPlannerROS
+base_local_planner: "teb_local_planner/TebLocalPlannerROS" 
+
+#alternatives: navfn/NavfnROS, global_planner/GlobalPlanner
+base_global_planner: "navfn/NavfnROS"
+

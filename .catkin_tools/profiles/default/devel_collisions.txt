@@ -1,0 +1,3 @@
+/home/amass/D/code_amass/ros_cpp/agilex_ugv_ws/devel/lib/libhector_gazebo_ros_magnetic.so 1
+/home/amass/D/code_amass/ros_cpp/agilex_ugv_ws/devel/lib/libhector_gazebo_ros_gps.so 1
+/home/amass/D/code_amass/ros_cpp/agilex_ugv_ws/devel/lib/libhector_gazebo_ros_imu.so 1

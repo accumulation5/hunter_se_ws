@@ -1,0 +1,31 @@
+<!-- move_base 导航功能包 启动文件 -->
+<launch>
+    
+    <!-- 加载move_base导航功能包，并加载相关参数 -->
+    <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen" clear_params="true">
+        
+        <!-- 将move_base默认订阅的/odom话题名称重映射为ekf滤波后发布的odometry/filtered -->
+        <!-- <remap from="odom" to="odometry/filtered" /> -->
+
+        <!-- move_base全局参数设置 -->
+        <rosparam file="$(find navigation)/param/move_base_params.yaml" command="load" />
+        
+        <!-- 代价地图通用参数 -->
+        <rosparam file="$(find navigation)/param/costmap_common_params.yaml" command="load" ns="global_costmap" />
+        <rosparam file="$(find navigation)/param/costmap_common_params.yaml" command="load" ns="local_costmap" />
+        
+        <!-- 本地/全局代价地图参数 -->
+        <rosparam file="$(find navigation)/param/local_costmap_params.yaml" command="load" />
+        <rosparam file="$(find navigation)/param/global_costmap_params.yaml" command="load" />
+        
+        <!-- 局部路径规划器参数加载 -->
+        <!-- <rosparam file="$(find navigation)/param/dwa_local_planner_params.yaml" command="load" /> -->
+        <!-- <rosparam file="$(find navigation)/param/base_local_planner_params.yaml" command="load" /> -->
+        <rosparam file="$(find navigation)/param/teb_local_planner_diff.yaml" command="load" />
+    
+        <!-- 全局路径规划器参数加载 -->
+        <rosparam file="$(find navigation)/param/navfn_global_planner_params.yaml" command="load" />
+        <!-- <rosparam file="$(find navigation)/param/global_planner_params.yaml" command="load" /> -->
+    </node>
+
+</launch>

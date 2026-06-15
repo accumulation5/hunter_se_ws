@@ -1,0 +1,22 @@
+<!--
+     导航实现launch文件   
+-->
+
+<launch>
+    <arg name="run_rviz" default="true"/>
+    
+    <!-- 加载地图服务 -->
+    <include file="$(find navigation)/launch/map_server.launch" />
+    
+    <!-- 加载amcl定位节点 驱动文件 -->
+    <include file="$(find navigation)/launch/amcl_diff.launch" />
+
+    <!-- 加载move_base功能包 启动文件 -->
+    <include file="$(find navigation)/launch/move_base.launch" />
+
+    <!-- 底盘相关节点 -->
+    <include file="$(find navigation)/launch/hunter_start.launch" >
+        <arg name="run_rviz" value="$(arg run_rviz)"/>
+    </include> 
+
+</launch>

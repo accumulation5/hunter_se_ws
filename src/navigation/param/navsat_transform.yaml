@@ -1,0 +1,47 @@
+# Frequency of the main run loop
+frequency: 50
+
+# Delay time, in seconds, before we calculate the transform from the UTM frame to your world frame. This is especially
+# important if you have use_odometry_yaw set to true. Defaults to 0.
+delay: 3.0
+
+# PLEASE READ: Like all nodes in robot_localization, this node assumes that your IMU data is reported in the ENU frame.
+# Many IMUs report data in the NED frame, so you'll want to verify that your data is in the correct frame before using
+# it. 
+
+# If your IMU does not account for magnetic declination, enter the value for your location here. If you don't know it,
+# see http://www.ngdc.noaa.gov/geomag-web/ (make sure to convert the value to radians). This parameter is mandatory.
+magnetic_declination_radians: 0
+
+# Your IMU's yaw, once the magentic_declination_radians value is added to it, should report 0 when facing east. If it
+# doesn't, enter the offset here. Defaults to 0.
+yaw_offset: 0.0
+
+# If this is true, the altitude is set to 0 in the output odometry message. Defaults to false.
+# 若只关心平面位置可 true（false 保留高度）
+zero_altitude: false
+
+broadcast_cartesian_transform: false
+
+# If this is true, the utm->world_frame transform will be published instead of the world_frame->utm transform. 
+# Note that broadcast_utm_transform still has to be enabled. Defaults to false.
+broadcast_cartesian_transform_as_parent_frame: false
+
+# 若true，那么所有接收到的里程计数据都会被转换回经纬度，并作为NavSatFix消息发布
+# /gps/filtered. Defaults to false.
+publish_filtered_gps: false
+
+# 是否用底盘 odom 的航向yaw作为方向参考，若false则使用imu的yaw数据
+use_odometry_yaw: true
+
+# 若为false则自行确定参数值，系统立即使用首次有效 GPS 读数作为原点，无需人工干预，适用于快速启动或基准不关键的环境
+# 节点会阻塞等待通过 /set_datum 服务 或 yaml中显式提供的地理坐标（如纬度、经度、高度）作为全局定位基准，常用于需精确对齐地图与真实世界坐标的场景。
+wait_for_datum: false
+
+# 用户可以指定（某个参数或条件），而不是使用第一个GPS位置和基于IMU的航向作为本地坐标系的原点
+# 使用此参数的原点（基准点）。参数中的字段表示以十进制表示的纬度和经度，
+# 以及以弧度表示的航向。由于navsat_transform_node采用东-北-上（ENU）标准，因此航向为0时对应东方
+# 若wait_for_datum为false，需要根据现场imu、gnss数据修改，确定初始值；
+# datum: [55.944904, -3.186693, 0.0]
+
+

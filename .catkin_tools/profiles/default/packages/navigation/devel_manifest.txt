@@ -1,0 +1,6 @@
+navigation
+/home/amass/hunter_ws/devel/.private/navigation/lib/navigation/set_action_goal_node.py /home/amass/hunter_ws/devel/lib/navigation/set_action_goal_node.py
+/home/amass/hunter_ws/devel/.private/navigation/lib/navigation/set_action_goal_node /home/amass/hunter_ws/devel/lib/navigation/set_action_goal_node
+/home/amass/hunter_ws/devel/.private/navigation/lib/pkgconfig/navigation.pc /home/amass/hunter_ws/devel/lib/pkgconfig/navigation.pc
+/home/amass/hunter_ws/devel/.private/navigation/share/navigation/cmake/navigationConfig.cmake /home/amass/hunter_ws/devel/share/navigation/cmake/navigationConfig.cmake
+/home/amass/hunter_ws/devel/.private/navigation/share/navigation/cmake/navigationConfig-version.cmake /home/amass/hunter_ws/devel/share/navigation/cmake/navigationConfig-version.cmake

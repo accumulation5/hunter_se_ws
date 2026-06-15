@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="run_gazebo" default="true"/>
+  <arg name="gazebo_gui" default="true"/>
+  <arg name="run_rviz" default="false"/>
+
+  <env name="ROSCONSOLE_CONFIG_FILE" value="$(find hunter_se_gazebo)/rosconsole.config"/>
+
+  <!-- 加载urdf模型文件 -->
+  <param name="robot_description" command="$(find xacro)/xacro $(find hunter_se_description)/urdf/hunter_se.urdf.xacro" />
+  
+  <!-- 启动gazebo，加载仿真世界 -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch" if="$(arg run_gazebo)">
+    <arg name="world_name" value="$(find hunter_se_gazebo)/world/house2.world"/>
+    <arg name="gui" value="$(arg gazebo_gui)"/>
+  </include>
+
+  <!-- 加载底盘控制器 -->
+  <include file="$(find hunter_se_control)/launch/hunter_se_contol.launch" />
+
+  <!-- gazebo中加载urdf文件 -->
+  <node name="spawn_model" pkg="gazebo_ros" type="spawn_model" output="screen" 
+    args="-urdf -param robot_description -model hunter_se" if="$(arg run_gazebo)"/>
+
+  <!-- 启动rviz -->
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find hunter_se_gazebo)/config/rviz.rviz" if="$(arg run_rviz)"/>
+
+</launch>
+

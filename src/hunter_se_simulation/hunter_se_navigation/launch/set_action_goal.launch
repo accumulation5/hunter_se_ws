@@ -1,0 +1,37 @@
+<launch>
+
+  <arg name="x" default="1.0"/>
+  <arg name="y" default="2.0"/>
+  <arg name="yaw" default="0.0"/>
+  <arg name="frame_id" default="map"/>
+  
+  <!-- true: 启动C++节点; false: 启动Python节点 -->
+  <arg name="use_cpp" default="true"/>
+
+  <node if="$(arg use_cpp)"
+        pkg="hunter_se_navigation"
+        type="set_action_goal_node"
+        name="set_action_goal_node"
+        output="screen">
+    <param name="x" value="$(arg x)"/>
+    <param name="y" value="$(arg y)"/>
+    <param name="yaw" value="$(arg yaw)"/>
+    <param name="frame_id" value="$(arg frame_id)"/>
+    <param name="wait_result" value="true"/>
+    <param name="timeout_sec" value="120.0"/>
+  </node>
+
+  <node unless="$(arg use_cpp)"
+        pkg="hunter_se_navigation"
+        type="set_action_goal_node.py"
+        name="set_action_goal_node_py"
+        output="screen">
+    <param name="x" value="$(arg x)"/>
+    <param name="y" value="$(arg y)"/>
+    <param name="yaw" value="$(arg yaw)"/>
+    <param name="frame_id" value="$(arg frame_id)"/>
+    <param name="wait_result" value="true"/>
+    <param name="timeout_sec" value="120.0"/>
+  </node>
+
+</launch>

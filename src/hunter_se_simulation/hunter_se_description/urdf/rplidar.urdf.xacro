@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 
+    3D激光雷达 == robosense 描述文件
+        型号：RS-LiDAR-16
+        参数：
+            线数：16线 
+            支架尺寸：长度-0.28m；直径-0.01m； 以车体base_link为参考坐标系
+            雷达尺寸：高度-0.10m；直径-0.10m; 
+-->
+
+<robot name="lidar" xmlns:xacro="http://wiki.ros.org/xacro">
+
+    <!-- 支架 参数变量定义 -->
+    <xacro:property name="support_lidar_height" value="0.28" />   <!-- 支架长度 -->
+    <xacro:property name="support_lidar_radius" value="0.01" />   <!-- 支架半径 -->
+    <xacro:property name="support_lidar_mass" value="1.0"/>       <!-- 支架质量 -->  
+    <xacro:property name="support_lidar_x" value="0.10" />        <!-- 支架安装的x坐标(以车体base_link为参考坐标系) -->
+    <xacro:property name="support_lidar_y" value="0.0" />         <!-- 支架安装的y坐标 -->
+    <xacro:property name="support_lidar_z" value="0.14" />        <!-- 支架安装的z坐标  -->
+
+    <!-- 雷达 参数变量定义 -->
+    <xacro:property name="lidar_height" value="0.036" />     <!-- 雷达长度 -->
+    <xacro:property name="lidar_radius" value="0.025" />     <!-- 雷达半径 -->
+    <xacro:property name="lidar_mass" value="0.6" />        <!-- 雷达质量 -->
+    <xacro:property name="lidar_x" value="0.0" />           <!-- -0.4 雷达安装的x坐标（以支架中心为参考坐标系） -->
+    <xacro:property name="lidar_y" value="0.0" />           <!-- -0.1 雷达安装的y坐标 -->
+    <xacro:property name="lidar_z" value="0.14" />          <!-- 雷达安装的z坐标  0.14-->
+
+    <!-- 1. 雷达支架 -->
+    <link name="support_lidar">
+        <visual>
+            <geometry>
+                <cylinder radius="${support_lidar_radius}" length="${support_lidar_height}" />
+            </geometry>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+            <material name="black">
+                <color rgba="0 0 0 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="${support_lidar_radius}" length="${support_lidar_height}" />
+            </geometry>
+        </collision>
+        <inertial>
+        <mass value="${support_lidar_mass}"/>
+        <origin xyz="0 0 0"/>
+        <inertia ixx="${(support_lidar_mass * (3.0*support_lidar_radius*support_lidar_radius + support_lidar_height*support_lidar_height)) / 12.0}" 
+                 iyy="${(support_lidar_mass * (3.0*support_lidar_radius*support_lidar_radius + support_lidar_height*support_lidar_height)) / 12.0}" 
+                 izz="${0.5 * support_lidar_mass * (support_lidar_radius*support_lidar_radius)}"
+                 ixy="0" ixz="0" iyz="0"/>
+        </inertial>
+    </link>
+
+    <joint name="support_lidar_to_base_link" type="fixed">
+        <parent link="base_link" />
+        <child link="support_lidar" />
+        <origin xyz="${support_lidar_x} ${support_lidar_y} ${support_lidar_z}" />
+    </joint>
+
+    <!-- 2. 雷达 -->
+    <link name="lidar">
+        <visual>
+            <geometry>
+                <mesh filename="package://hunter_se_description/meshes/lidar_N10P/lidar_N10P.stl" 
+                    scale="0.001 0.001 0.001"/>
+            </geometry>
+            <origin xyz="-0.01 0.0 0.0" rpy="1.5708 -1.5708 3.14" />        
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://hunter_se_description/meshes/lidar_N10P/lidar_N10P.stl" 
+                 scale="0.001 0.001 0.001"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="lidar_to_support_lidar" type="fixed">
+        <parent link="support_lidar" />
+        <child link="lidar" />
+        <origin xyz="${lidar_x} ${lidar_y} ${lidar_z}" />
+    </joint>
+
+
+    <!-- 单线2d雷达,思岚rplidar -->
+    <gazebo reference="lidar">            <!-- 对应描述文件.urdf中的link名称 --> 
+        <material>Gazebo/Blue</material>
+        <sensor type="ray" name="rplidar">
+        <pose>0 0 0 0 0 0</pose>
+        <visualize>false</visualize>       <!-- gazebo中显示雷达扫描线 -->
+        <update_rate>5.5</update_rate>
+        <ray>
+            <scan>
+            <horizontal>                      <!-- 水平方向扫描参数 -->
+                <samples>360</samples>          <!-- 雷达旋转一周的采样数 -->
+                <resolution>0.4</resolution>      <!-- 角度分辨率 -->
+                <min_angle>-3.14</min_angle>    <!-- 雷达扫描范围，单位为弧度 -->
+                <max_angle>3.14</max_angle>     <!-- 3.14到3.14表示扫描范围为6.28弧度，即360度 -->
+            </horizontal>
+            </scan>
+            <range>
+                <min>0.20</min>                   <!-- 雷达的最小测距范围，单位为米 -->
+                <max>15.0</max>                   <!-- 雷达的最大测距范围，单位为米 -->
+                <resolution>0.01</resolution>     <!-- 雷达测距的分辨率，单位为米 -->
+            </range>
+            <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+            </noise>
+        </ray>
+        
+        <plugin name="gazebo_rplidar" filename="libgazebo_ros_laser.so">
+            <topicName>/scan</topicName>
+            <frameName>lidar</frameName>
+        </plugin>
+        </sensor>
+    </gazebo>
+</robot>
+
+
+
+
+
+

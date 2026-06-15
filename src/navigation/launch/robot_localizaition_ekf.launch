@@ -1,0 +1,29 @@
+
+<!--  
+  功能：ekf融合滤波节点
+-->
+
+<launch>
+
+  <!-- navsat_transform节点 -->
+  <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform_node" output="screen">
+    <rosparam file="$(find navigation)/param/navsat_transform.yaml" command="load"  />
+    <!-- <remap from="imu/data" to="imu/data"/> -->
+    <remap from="odometry/filtered" to="odom"/>
+    <remap from="gps/fix" to="gps/fix"/>
+  </node>
+
+  <!-- 局部融合 ekf_se_odom节点
+    局部融合odom+GPS -> odom->base_footprint（world_frame=odom）
+    局部里程计修正，仅发布 odom->base_footprint TF 
+  -->
+  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se_odom" clear_params="true">
+    <rosparam file="$(find navigation)/param/robot_localizaition_ekf_odom.yaml" command="load"  />
+  </node>
+
+  <!-- 全局融合 ekf_se_map节点 -->
+  <!-- <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se_map" clear_params="true">
+    <rosparam file="$(find navigation)/param/robot_localizaition_ekf_map.yaml" command="load"  />
+  </node> -->
+
+</launch>

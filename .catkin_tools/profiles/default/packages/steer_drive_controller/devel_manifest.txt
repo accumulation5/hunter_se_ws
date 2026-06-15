@@ -1,0 +1,6 @@
+hunter_se_simulation/drivers/hunter_se_base/steer_drive_controller
+/home/amass/hunter_ws/devel/.private/steer_drive_controller/lib/libsteer_drive_controller.so /home/amass/hunter_ws/devel/lib/libsteer_drive_controller.so
+/home/amass/hunter_ws/devel/.private/steer_drive_controller/lib/steer_drive_controller/steer_drive_controller_steerbot /home/amass/hunter_ws/devel/lib/steer_drive_controller/steer_drive_controller_steerbot
+/home/amass/hunter_ws/devel/.private/steer_drive_controller/lib/pkgconfig/steer_drive_controller.pc /home/amass/hunter_ws/devel/lib/pkgconfig/steer_drive_controller.pc
+/home/amass/hunter_ws/devel/.private/steer_drive_controller/share/steer_drive_controller/cmake/steer_drive_controllerConfig-version.cmake /home/amass/hunter_ws/devel/share/steer_drive_controller/cmake/steer_drive_controllerConfig-version.cmake
+/home/amass/hunter_ws/devel/.private/steer_drive_controller/share/steer_drive_controller/cmake/steer_drive_controllerConfig.cmake /home/amass/hunter_ws/devel/share/steer_drive_controller/cmake/steer_drive_controllerConfig.cmake
