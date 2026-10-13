@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<robot name="depth_camera" xmlns:xacro="http://www.ros.org/wiki/xacro">    
+    
+  <!-- gazebo 仿真参数与插件配置 -->
+  <gazebo reference="depth_camera">         <!-- 对应描述文件.urdf中的link名称 -->
+    <sensor type="depth" name="camera">
+      <always_on>true</always_on>
+      <update_rate>20.0</update_rate>       <!-- 更新频率 20次/s -->
+      <camera>
+        <horizontal_fov>${60.0*3.14/180.0}</horizontal_fov>
+        <image>
+          <format>R8G8B8</format>
+          <width>640</width>                <!-- 深度相机的分辨率，单位为像素 -->
+          <height>480</height>
+        </image>
+        <clip>
+          <near>0.05</near>                 <!-- 深度相机的测距范围，单位为米 -->
+          <far>8.0</far>
+        </clip>
+      </camera> 
+
+      <!-- kinect插件 -->
+      <plugin name="depth_camera_plugin" filename="libgazebo_ros_camera.so">
+        <ros>
+          <namespace>/camera</namespace>
+          <!-- 话题重映射，确保与SLAM或导航节点匹配 -->
+          <remapping>/camera/rgb/image_raw:=/color/image_raw</remapping>
+          <remapping>/camera/depth/image_raw:=/depth/image_raw</remapping>
+        </ros>
+        <camera_name>depth_camera</camera_name>
+        <frame_name>depth_camera_kinect</frame_name>
+        <hack_baseline>0.07</hack_baseline> <!-- 模拟双目基线，辅助点云生成 -->
+        <point_cloud>true</point_cloud>     <!-- 显式启用点云发布 -->
+        <depth_image>true</depth_image>
+        <alwaysOn>true</alwaysOn>
+        <updateRate>10</updateRate>
+      </plugin>
+
+    </sensor>
+  </gazebo>
+
+</robot>

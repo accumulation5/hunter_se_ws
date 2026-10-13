@@ -1,0 +1,23 @@
+<!-- 无人车 描述文件 集成 ：底盘、雷达、深度相机 -->
+<robot name="hunter_se" xmlns:xacro="http://wiki.ros.org/xacro">
+    
+    <!-- 描述文件集成 -->
+    <!-- 机器人底盘 -->
+    <xacro:include filename="hunter_se_base/hunter_se_base.urdf.xacro" />
+
+    <!-- 激光雷达 -->
+    <!-- <xacro:include filename="$(find sensors_desciption)/urdf/rplidar/rplidar.urdf.xacro" />         -->
+    <!-- <xacro:include filename="$(find sensors_desciption)/urdf/RS16/RS16.urdf.xacro" />         -->   
+    <xacro:include filename="$(find sensors_desciption)/urdf/VLP16/VLP16.urdf.xacro"/>        
+
+    <!-- 深度相机 -->
+    <xacro:include filename="$(find sensors_desciption)/urdf/depth_camera/depth_camera.urdf.xacro" />
+
+    <!-- gnss-rtk -->
+    <!-- <xacro:include filename="$(find sensors_desciption)/urdf/gnss-rtk/gnss_rtk_g70.urdf.xacro" /> -->
+    <xacro:include filename="$(find sensors_desciption)/urdf/gnss-rtk/gps_antenna.urdf.xacro" />
+
+    <!-- IMU -->
+    <xacro:include filename="$(find sensors_desciption)/urdf/imu/imu.urdf.xacro" />
+
+</robot>

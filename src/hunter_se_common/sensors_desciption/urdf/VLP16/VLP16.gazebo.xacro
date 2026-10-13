@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<robot name="lidar" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- gazebo仿真模拟与插件配置:VLP-16  非gpu版本 -->
+  <gazebo reference="lidar">            <!-- 对应描述文件.urdf中的link名称 --> 
+    <sensor type="ray" name="VLP16">
+      <pose>0 0 0 0 0 0</pose>
+      <always_on>true</always_on>
+      <visualize>false</visualize>       <!-- gazebo中显示雷达扫描线 -->
+      <update_rate>10</update_rate>
+      <ray>
+        <scan>
+          <horizontal>                                    <!-- 水平方向扫描参数 -->
+              <samples>440</samples>
+              <resolution>1</resolution>
+              <min_angle>-${M_PI}</min_angle>
+              <max_angle>${M_PI}</max_angle>
+          </horizontal>
+          <vertical>                                      <!-- 垂直方向扫描参数 -->
+              <samples>16</samples>                       <!-- 雷达旋转一周的采样数 -->
+              <resolution>1</resolution>                  <!-- 角度分辨率 -->
+              <min_angle>-${15.0*M_PI/180.0}</min_angle>  <!-- 雷达扫描范围，单位为弧度 -->
+              <max_angle>${15.0*M_PI/180.0}</max_angle>  <!-- 3.14到3.14表示扫描范围为6.28弧度，即360度 -->
+          </vertical>
+        </scan>
+        <range>
+          <min>1.0</min>                    <!-- 雷达的最小测距范围，单位为米 -->
+          <max>50.0</max>                    <!-- 雷达的最大测距范围，单位为米 -->
+          <resolution>0.001</resolution>     <!-- 雷达测距的分辨率，单位为米 -->
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </ray>
+
+      <plugin name="velodyne_plugin" filename="libgazebo_ros_velodyne_laser.so">
+        <ros>
+          <namespace>/</namespace>
+          <remapping>~/out:=/velodyne_points</remapping>
+        </ros>
+        <frame_name>lidar</frame_name>
+        <organize_cloud>false</organize_cloud>
+        <min_intensity>0</min_intensity>
+        <gaussian_noise>0.008</gaussian_noise>
+      </plugin>
+
+    </sensor>
+
+  </gazebo>
+
+</robot>

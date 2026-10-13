@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 
+    3D激光雷达 == velodyne 描述文件
+        型号：velodyne-16
+        参数：
+            线数：16线 
+            支架尺寸：长度-0.28m；直径-0.01m； 以车体base_link为参考坐标系
+            雷达尺寸：高度-0.10m；直径-0.10m; 
+-->
+
+<robot name="lidar" xmlns:xacro="http://wiki.ros.org/xacro">
+  <xacro:property name="M_PI" value="3.1415926535897931" />
+
+  <!-- gazebo插件VLP16 -->
+  <xacro:include filename="$(find sensors_desciption)/urdf/VLP16/VLP16.gazebo.xacro" />
+  
+  <!-- 支架 参数变量定义 -->
+  <xacro:property name="support_lidar_height" value="0.28" />   <!-- 支架长度 -->
+  <xacro:property name="support_lidar_radius" value="0.01" />   <!-- 支架半径 -->
+  <xacro:property name="support_lidar_mass" value="1.0"/>       <!-- 支架质量 -->  
+  <xacro:property name="support_lidar_x" value="0.10" />        <!-- 支架安装的x坐标(以车体base_link为参考坐标系) -->
+  <xacro:property name="support_lidar_y" value="0.0" />         <!-- 支架安装的y坐标 -->
+  <xacro:property name="support_lidar_z" value="0.14" />        <!-- 支架安装的z坐标  -->
+
+  <!-- 雷达 参数变量定义 -->
+  <xacro:property name="lidar_height" value="0.08" />     <!-- 雷达长度 -->
+  <xacro:property name="lidar_radius" value="0.05" />     <!-- 雷达半径 -->
+  <xacro:property name="lidar_mass" value="0.83"/>        <!-- 雷达质量 -->
+  <xacro:property name="lidar_x" value="0.10" />           <!-- 雷达安装的x坐标（以支架中心为参考坐标系） -->
+  <xacro:property name="lidar_y" value="0.0" />           <!-- 雷达安装的y坐标 -->
+  <xacro:property name="lidar_z" value="0.28" />          <!-- 雷达安装的z坐标  -->
+
+  <!-- 1. 雷达支架 -->
+  <link name="support_lidar">
+    <visual>
+      <geometry>
+          <cylinder radius="${support_lidar_radius}" length="${support_lidar_height}" />
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+      <material name="black">
+          <color rgba="0 0 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+          <cylinder radius="${support_lidar_radius}" length="${support_lidar_height}" />
+      </geometry>
+    </collision>
+    <inertial>
+    <mass value="${support_lidar_mass}"/>
+    <origin xyz="0 0 0"/>
+    <inertia ixx="${(support_lidar_mass * (3.0*support_lidar_radius*support_lidar_radius + support_lidar_height*support_lidar_height)) / 12.0}" 
+              iyy="${(support_lidar_mass * (3.0*support_lidar_radius*support_lidar_radius + support_lidar_height*support_lidar_height)) / 12.0}" 
+              izz="${0.5 * support_lidar_mass * (support_lidar_radius*support_lidar_radius)}"
+              ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+
+  <joint name="support_lidar_to_base_link" type="fixed">
+    <parent link="base_link" />
+    <child link="support_lidar" />
+    <origin xyz="${support_lidar_x} ${support_lidar_y} ${support_lidar_z}" />
+  </joint>
+
+  <!-- 2. 雷达 -->
+  <link name="lidar">
+    <visual>
+      <geometry>
+        <mesh filename="file://$(find sensors_desciption)/meshes/velodyne/VLP16.stl"
+        scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="1.57 0.0 1.57" />
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0.03585"/>
+      <geometry>
+        <mesh filename="file://$(find sensors_desciption)/meshes/velodyne/VLP16.stl"
+        scale="0.001 0.001 0.001"/>
+      </geometry>
+      <origin xyz="0.0 0.0 0.0" rpy="1.57 0.0 1.57" />
+    </collision>
+    <inertial>
+      <mass value="${lidar_mass}"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="${(lidar_mass * (3.0*lidar_radius*lidar_radius + lidar_height*lidar_height)) / 12.0}" 
+                iyy="${(lidar_mass * (3.0*lidar_radius*lidar_radius + lidar_height*lidar_height)) / 12.0}" 
+                izz="${0.5 * lidar_mass * (lidar_radius*lidar_radius)}"
+                ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+
+  <joint name="lidar_to_base_link" type="fixed">
+    <parent link="base_link" />
+    <child link="lidar" />
+    <origin xyz="${lidar_x} ${lidar_y} ${lidar_z}" />
+  </joint>
+
+</robot>

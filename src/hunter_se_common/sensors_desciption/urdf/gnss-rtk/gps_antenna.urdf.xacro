@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+
+<!-- gps蘑菇头天线描述文件 -->
+
+<robot name="gps_antenna" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+   
+  <!-- hector_gps gazebo插件配置 -->
+  <xacro:include filename="$(find sensors_desciption)/urdf/gnss-rtk/gnss-rtk.gazebo.xacro" />
+
+  <!-- gps蘑菇头支撑杆 -->
+  <link name="gps_antenna_pole">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="0.2" radius="0.01"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.5 0.5 0.5 1"/>
+      </material>
+    </visual>
+  </link>
+  <joint name="gps_antenna_pole_joint" type="fixed">
+    <origin xyz="-0.28 0 0.1" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="gps_antenna_pole"/>
+  </joint>
+
+  <!-- 天线主体 -->
+  <link name="gps_antenna">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find sensors_desciption)/meshes/RTK/gps_antenna.stl"/>
+        <!-- <mesh filename="package://sensors_desciption/meshes/RTK/gps_antenna.stl"/> -->
+      </geometry>
+      <material name="">
+        <color rgba="1.0 1.0 0.9 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="file://$(find sensors_desciption)/meshes/RTK/gps_antenna.stl"/>
+        <!-- <mesh filename="package://sensors_desciption/meshes/RTK/gps_antenna.stl"/> -->
+      </geometry>
+    </collision>
+  </link>
+  <joint name="gps_antenna_joint" type="fixed">
+    <origin xyz="0 0 0.1" rpy="0 0 0"/>
+    <parent link="gps_antenna_pole"/>
+    <child link="gps_antenna"/>
+  </joint>
+
+</robot>

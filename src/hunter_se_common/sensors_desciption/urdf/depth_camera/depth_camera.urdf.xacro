@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 
+    深度相机 == realsense 描述文件
+        型号：D435i
+        参数： 
+            支架尺寸：长度-0.04m；直径-0.01
+            相机尺寸：长宽高：0.09，0.02505，0.025 m
+-->
+
+<robot name="depth_camera" xmlns:xacro="http://wiki.ros.org/xacro">
+
+    <!-- gazebo深度相机插件配置 -->
+    <xacro:include filename="$(find hunter_se_description)/urdf/depth_camera/depth_camera.gazebo.xacro" />
+    
+    <!-- 支架 参数变量定义 -->
+    <xacro:property name="support_3d_camera_length" value="0.04" />   <!-- 支架长度 -->
+    <xacro:property name="support_3d_camera_radius" value="0.01" />   <!-- 支架半径 -->
+    <xacro:property name="support_3d_camera_mass" value="0.02"/>       <!-- 支架质量 -->    
+    <xacro:property name="support_3d_camera_x" value="0.38" />        <!-- 支架安装的x坐标(以车体base_link为参考坐标系) -->
+    <xacro:property name="support_3d_camera_y" value="0.0" />         <!-- 支架安装的y坐标 -->
+    <xacro:property name="support_3d_camera_z" value="0.02" />        <!-- 支架安装的z坐标  -->
+    
+    <!-- 深度相机 变量定义 -->
+    <xacro:property name="camera_x" value="0.39" />          <!-- 相机安装的x坐标 （以支架中心为参考坐标系）-->
+    <xacro:property name="camera_y" value="0.0" />          <!-- 相机安装的y坐标 -->
+    <xacro:property name="camera_z" value="0.05" />      <!-- 相机安装的z坐标 -->
+
+    <!-- 1. 相机支架 -->
+    <link name="support_3d_camera">
+        <visual>
+            <geometry>
+                <cylinder radius="${support_3d_camera_radius}" length="${support_3d_camera_length}" />
+            </geometry>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+            <material name="black">
+                <color rgba="0 0 0 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="${support_3d_camera_radius}" length="${support_3d_camera_length}" />
+            </geometry>
+        </collision>
+        <inertial>
+        <mass value="${support_3d_camera_mass}"/>
+        <origin xyz="0 0 0"/>
+        <inertia ixx="${(support_3d_camera_mass * (3.0*support_3d_camera_radius*support_3d_camera_radius + support_3d_camera_length*support_3d_camera_length)) / 12.0}" 
+                 iyy="${(support_3d_camera_mass * (3.0*support_3d_camera_radius*support_3d_camera_radius + support_3d_camera_length*support_3d_camera_length)) / 12.0}" 
+                 izz="${0.5 * support_3d_camera_mass * (support_3d_camera_radius*support_3d_camera_radius)}"
+                 ixy="0" ixz="0" iyz="0"/>
+        </inertial>
+    </link>
+
+    <joint name="support_3d_camera_to_base_link" type="fixed">
+        <parent link="base_link" />
+        <child link="support_3d_camera" />
+        <origin xyz="${support_3d_camera_x} ${support_3d_camera_y} ${support_3d_camera_z}" />
+    </joint>
+
+    <!-- 2. 相机 -->
+    <link name="depth_camera_link">
+        <visual>
+            <geometry>
+                <mesh filename="file://$(find hunter_se_description)/meshes/realsense/d435.stl"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0" rpy="0 0 -1.57" />
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="file://$(find hunter_se_description)/meshes/realsense/d435.stl"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.072" />
+            <origin xyz="0 0 0" />
+            <inertia ixx="0.003881243" ixy="0.0" ixz="0.0" iyy="0.000498940" iyz="0.0" izz="0.003879257" />
+        </inertial>
+    </link>
+
+    <joint name="depth_camera_to_base_link" type="fixed">
+        <parent link="base_link" />
+        <child link="depth_camera_link" />
+        <origin xyz="${camera_x} ${camera_y} ${camera_z}" />
+    </joint>
+
+
+</robot>
