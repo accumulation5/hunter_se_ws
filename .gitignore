@@ -1,0 +1,14 @@
+#忽略编译、安装等过程文件
+build/
+install/
+log/
+.agents/
+.vscode/
+
+#忽略Python 缓存
+__pycache__/
+
+#忽略深度学习模型权重文件
+*.pt  
+
+

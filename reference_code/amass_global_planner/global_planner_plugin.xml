@@ -1,0 +1,9 @@
+<library path="lib/libamass_global_planner">
+  <class name="amass_global_planner/amass_global_planner" 
+    type="amass::global_planner::GlobalPlanner" 
+    base_class_type="nav_core::BaseGlobalPlanner">
+    <description>
+      A implementation of a grid based planner using multi algorithm
+    </description>
+  </class>
+</library>

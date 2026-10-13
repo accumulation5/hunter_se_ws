@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>amass_global_planner</name>
+  <version>1.0.0</version>
+  <description>
+     The amass_global_planner package
+  </description>
+  <maintainer email="amass555@todo.com">amass</maintainer>
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>costmap_2d</depend>
+  <depend>geometry_msgs</depend>
+  <depend>nav_core</depend>
+  <depend>nav_msgs</depend>
+  <depend>pluginlib</depend>
+  <depend>roscpp</depend>
+  <depend>tf</depend>
+
+  <export>
+      <nav_core plugin="${prefix}/global_planner_plugin.xml" />
+  </export>
+</package>
